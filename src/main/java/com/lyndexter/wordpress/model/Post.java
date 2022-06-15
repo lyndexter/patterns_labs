@@ -1,5 +1,6 @@
 package com.lyndexter.wordpress.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.opencsv.bean.CsvBindByPosition;
 import java.sql.Date;
 import java.util.Collection;
@@ -7,10 +8,12 @@ import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class Post {
@@ -24,7 +27,7 @@ public class Post {
   @CsvBindByPosition(position = 4)
   private Date creationDate;
   @CsvBindByPosition(position = 5)
-  private Date expiratioDate;
+  private Date expirationDate;
   @CsvBindByPosition(position = 6)
   private Date lastModificationDate;
   @CsvBindByPosition(position = 7)
@@ -37,6 +40,8 @@ public class Post {
   private Collection<Comment> commentsByUid;
 
   @Id
+  @GenericGenerator(name = "sequence_id", strategy = "com.lyndexter.wordpress.utils.UidGenerator")
+  @GeneratedValue(generator = "sequence_id")
   @Column(name = "uid")
   public String getUid() {
     return uid;
@@ -78,12 +83,12 @@ public class Post {
 
   @Basic
   @Column(name = "expiratio_date")
-  public Date getExpiratioDate() {
-    return expiratioDate;
+  public Date getExpirationDate() {
+    return expirationDate;
   }
 
-  public void setExpiratioDate(Date expiratioDate) {
-    this.expiratioDate = expiratioDate;
+  public void setExpirationDate(Date expirationDate) {
+    this.expirationDate = expirationDate;
   }
 
   @Basic
@@ -137,18 +142,19 @@ public class Post {
     Post post = (Post) o;
     return isPage == post.isPage && publishStatus == post.publishStatus && commentCount == post.commentCount
         && Objects.equals(uid, post.uid) && Objects.equals(title, post.title)
-        && Objects.equals(creationDate, post.creationDate) && Objects.equals(expiratioDate, post.expiratioDate)
+        && Objects.equals(creationDate, post.creationDate) && Objects.equals(expirationDate, post.expirationDate)
         && Objects.equals(lastModificationDate, post.lastModificationDate) && Objects.equals(body, post.body);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(uid, isPage, title, creationDate, expiratioDate, lastModificationDate, publishStatus,
+    return Objects.hash(uid, isPage, title, creationDate, expirationDate, lastModificationDate, publishStatus,
         commentCount, body);
   }
 
 
   @OneToMany(mappedBy = "postByPostUid")
+  @JsonIgnore
   public Collection<Comment> getCommentsByUid() {
     return commentsByUid;
   }
@@ -159,6 +165,7 @@ public class Post {
 
   @ManyToOne
   @JoinColumn(name = "author", referencedColumnName = "uid", nullable = false)
+  @JsonIgnore
   public User getAuthor() {
     return author;
   }
@@ -170,7 +177,7 @@ public class Post {
   @Override
   public String toString() {
     return "Post{" + "uid='" + uid + '\'' + ", isPage=" + isPage + ", title='" + title + '\'' + ", creationDate="
-        + creationDate + ", expiratioDate=" + expiratioDate + ", lastModificationDate=" + lastModificationDate
+        + creationDate + ", expiratioDate=" + expirationDate + ", lastModificationDate=" + lastModificationDate
         + ", publishStatus=" + publishStatus + ", commentCount=" + commentCount + ", body='" + body + '\'' + ", author="
         + author + '}';
   }

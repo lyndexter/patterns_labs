@@ -18,8 +18,8 @@ public class WordpressApplication implements CommandLineRunner {
 
   @Override
   public void run(String... args) {
-    DatabaseFillingService myBean=applicationContext.getBean(DatabaseFillingServiceImpl.class);
-    myBean.fillDatabaseFromFile("src/main/resources/test1.csv");
+//    DatabaseFillingService myBean=applicationContext.getBean(DatabaseFillingServiceImpl.class);
+//    myBean.fillDatabaseFromFile("src/main/resources/test1.csv");
   }
 }
 

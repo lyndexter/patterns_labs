@@ -1,17 +1,18 @@
 package com.lyndexter.wordpress.controller;
 
 import com.lyndexter.wordpress.model.Post;
+import com.lyndexter.wordpress.model.PostDto;
 import com.lyndexter.wordpress.model.PublishStatus;
 
 public interface EditorController {
 
-  Post createPost(Post post);
-  
-  Post editPost(Post post);
-  
-  Post deletePost(Post post);
-  
-  Post changePostStatus(PublishStatus status);
+  Post createPost(PostDto postDto);
 
-  void hideComments(Boolean isVisible);
+  Post editPost(Post post, String id);
+
+  Post deletePost(String id);
+
+  void changePostStatus(PublishStatus status, String id);
+
+  void hideComments(Boolean isVisible, String id);
 }

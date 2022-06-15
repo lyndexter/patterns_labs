@@ -1,5 +1,6 @@
 package com.lyndexter.wordpress.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.opencsv.bean.CsvBindByPosition;
 import java.util.Collection;
 import java.util.Objects;
@@ -109,6 +110,7 @@ public class User {
   }
 
   @OneToMany(mappedBy = "userByUserUid")
+  @JsonIgnore
   public Collection<Comment> getCommentsByUid() {
     return commentsByUid;
   }
@@ -118,6 +120,7 @@ public class User {
   }
 
   @OneToMany(mappedBy = "author")
+  @JsonIgnore
   public Collection<Post> getPostsByUid() {
     return postsByUid;
   }
